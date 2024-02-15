@@ -1,11 +1,14 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../database/typeorm/datasource';
 import { Job } from '../../models/Job';
+import { IRemainingJobsGroupedByFacilityAndNurseTypes } from '../../../domain/entities/IRemainingJobsGroupedByFacilityAndNurseTypes';
+import { IJobsRepository } from '../IJobsRepository';
 
-export class JobsRepository {
+export class JobsRepository implements IJobsRepository {
   repository: Repository<Job> = AppDataSource.getRepository(Job);
 
-  async findRemainingJobsGroupedByFacilityAndNurseType(): Promise<any> {
+  async findRemainingJobsGroupedByFacilityAndNurseType():
+    Promise<IRemainingJobsGroupedByFacilityAndNurseTypes> {
     const result = await this.repository.query(`
       WITH total_jobs AS (
         SELECT
@@ -22,9 +25,9 @@ export class JobsRepository {
       ),
       filled_jobs AS (
         SELECT
-            jb.facility_id,
-            jb.nurse_type_needed,
-            count(nhj.*) AS filled_positions
+            jb.facility_id AS "facilityId",
+            jb.nurse_type_needed AS "nurseTypeNeeded",
+            count(nhj.*) AS "filledPositions"
         FROM
             jobs jb
         JOIN nurse_hired_jobs nhj ON
@@ -34,16 +37,19 @@ export class JobsRepository {
             jb.nurse_type_needed
       )
       SELECT
-        tj.facility_id,
-        tj.nurse_type_needed,
-        tj.total_number_nurses_needed - fj.filled_positions AS remaining_positions
+        fj."facilityId",
+        fj."nurseTypeNeeded",
+        tj.total_number_nurses_needed - fj."filledPositions" AS "remainingPositions"
       FROM
         total_jobs tj
       JOIN filled_jobs fj ON
-        fj.facility_id = tj.facility_id
-        AND fj.nurse_type_needed = tj.nurse_type_needed
-      ORDER BY tj.facility_id ASC, tj.nurse_type_needed ASC;
+        fj."facilityId" = tj.facility_id
+        AND fj."nurseTypeNeeded" = tj.nurse_type_needed
+      ORDER BY tj.facility_id ASC, tj.nurse_type_needed ASC
     `);
-    return result;
+    return result.map((item: any) => ({
+      ...item,
+      remainingPositions: Number(item.remainingPositions),
+    }));
   }
 }
