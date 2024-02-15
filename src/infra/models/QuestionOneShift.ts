@@ -13,8 +13,8 @@ export class QuestionOneShift implements IQuestionOneShift {
     shiftDate: Date;
 
   @Column({ name: 'start_time' })
-    startTime: Date;
+    startTime: string;
 
   @Column({ name: 'end_time' })
-    endTime: Date;
+    endTime: string;
 }
