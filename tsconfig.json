@@ -4,6 +4,8 @@
     "module": "CommonJS",
     "outDir": "./dist",
     "rootDir": "./src",
+    "types": ["jest"],
+    "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
