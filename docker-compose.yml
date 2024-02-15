@@ -1,0 +1,13 @@
+version: '1.0'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 773e2ea351394efeaec5e624b56f10dc
+      POSTGRES_DB: bravodb
+    volumes:
+      - ./container/db:/var/lib/postgresql
+    ports:
+      - "5434:5432"
