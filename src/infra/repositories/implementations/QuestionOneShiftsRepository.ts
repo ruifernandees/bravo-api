@@ -10,4 +10,10 @@ export class QuestionOneShiftsRepository implements IQuestionOneShiftsRepository
   async index(): Promise<IQuestionOneShift[]> {
     return this.repository.find();
   }
+
+  async findById(id: IQuestionOneShift['shiftId']): Promise<IQuestionOneShift | null> {
+    return this.repository.findOneBy({
+      shiftId: id,
+    });
+  }
 }
