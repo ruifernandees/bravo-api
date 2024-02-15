@@ -3,9 +3,9 @@ import { ICompareTwoShiftsDTOOutput } from '../../dtos/ICompareTwoShiftsDTOOutpu
 import { ShiftComparison } from '../../entities/IShiftComparison';
 
 export class CompareTwoShiftsUseCase {
-  async execute(
+  execute(
     { firstShift, secondShift }: ICompareTwoShiftsDTOInput,
-  ): Promise<ICompareTwoShiftsDTOOutput> {
+  ): ICompareTwoShiftsDTOOutput {
     const shiftComparison = new ShiftComparison(firstShift, secondShift);
     const maximumOverlapThreshold = shiftComparison.computeMaximumOverlapThreshold();
     const overlapMinutes = shiftComparison.computeOverlapMinutes();

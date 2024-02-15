@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { findAllQuestionOneShiftsUseCase } from '../../domain/useCases/FindAllQuestionOneShiftsUseCase';
 import { findQuestionOneShiftByIdUseCase } from '../../domain/useCases/FindQuestionOneShiftByIdUseCase';
+import { compareTwoShiftsUseCase } from '../../domain/useCases/CompareTwoShiftsUseCase';
 
 export async function index(
   request: Request,
@@ -17,5 +18,9 @@ export async function compareShifts(
   if (!firstShift) return response.sendStatus(404).json({ message: 'First shift not found' });
   const secondShift = await findQuestionOneShiftByIdUseCase.execute(request.body.secondShift);
   if (!secondShift) return response.sendStatus(404).json({ message: 'Second shift not found' });
-  return response.json({ firstShift, secondShift });
+  const comparison = compareTwoShiftsUseCase.execute({
+    firstShift,
+    secondShift,
+  });
+  return response.json(comparison);
 }
