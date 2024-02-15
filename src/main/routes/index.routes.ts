@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import { QuestionOneShiftsRouter } from './question-one-shifts.routes';
 
 const MainRouter = Router();
 
-MainRouter.get('/test', (req, res) => res.json({ message: 'hello world' }));
+MainRouter.use('/question-one-shifts', QuestionOneShiftsRouter);
 
 export { MainRouter };

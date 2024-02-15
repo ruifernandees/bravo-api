@@ -9,11 +9,11 @@ export const AppDataSource = new DataSource({
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DATABASE,
-  synchronize: true,
+  synchronize: false,
   logging: true,
-  entities: ['src/infra/typeorm/models/*.ts'],
+  entities: ['src/infra/models/*.ts'],
   subscribers: [],
-  migrations: ['src/infra/typeorm/migrations/*.ts'],
+  migrations: ['src/infra/migrations/*.ts'],
 });
 
 AppDataSource.initialize().then(() => {
