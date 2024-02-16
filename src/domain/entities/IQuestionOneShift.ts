@@ -4,4 +4,5 @@ export interface IQuestionOneShift {
   shiftDate: Date;
   startTime: string;
   endTime: string;
+  facilityName?: string;
 }
